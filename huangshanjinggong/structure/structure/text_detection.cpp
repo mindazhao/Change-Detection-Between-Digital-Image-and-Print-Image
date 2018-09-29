@@ -358,7 +358,7 @@ void quick_sort(double *s, vector<Mat> &H_list, int l, int r)
 		Mat temp = H_list[l].clone();
 		while (i < j)
 		{
-			while (i < j && s[j] >= x) // ´ÓÓÒÏò×óÕÒµÚÒ»¸öÐ¡ÓÚxµÄÊý  
+			while (i < j && s[j] >= x) 
 				j--;
 			if (i < j)
 			{
@@ -366,7 +366,7 @@ void quick_sort(double *s, vector<Mat> &H_list, int l, int r)
 				H_list[j].copyTo(H_list[i - 1]);
 			}
 
-			while (i < j && s[i] < x) // ´Ó×óÏòÓÒÕÒµÚÒ»¸ö´óÓÚµÈÓÚxµÄÊý  
+			while (i < j && s[i] < x) 
 				i++;
 			if (i < j)
 			{
@@ -376,15 +376,14 @@ void quick_sort(double *s, vector<Mat> &H_list, int l, int r)
 		}
 		s[i] = x;
 		temp.copyTo(H_list[i]);
-		quick_sort(s, H_list, l, i - 1); // µÝ¹éµ÷ÓÃ   
+		quick_sort(s, H_list, l, i - 1);  
 		quick_sort(s, H_list, i + 1, r);
 	}
 }
 
 bool check_coefficients(Mat &H)
 {
-	//½µ²ÉÑù2±¶
-	//ÇãÐ±¡¢·ÅËõ²ÎÊý¼ì²é
+	
 	if ((((double*)H.data)[1] > 0.1) || (((double*)H.data)[1] < -0.1) || (((double*)H.data)[3] > 0.1) || (((double*)H.data)[3] < -0.1) || \
 		(((double*)H.data)[0] > 1.1) || (((double*)H.data)[0] < 0.9) || (((double*)H.data)[4] > 1.1) || (((double*)H.data)[4] < 0.9))
 		return false;
@@ -395,7 +394,7 @@ bool check_coefficients(Mat &H)
 double Residual(Mat H, Mat X1, Mat X2)
 {
 	int num = X1.cols;
-	//ÆÀ¼ÛÎó²î
+	
 	Mat X2_ = H*X1;
 	Mat X2_row_3 = Mat::zeros(3, num, CV_64F);
 	X2_.row(2).copyTo(X2_row_3.row(0));
@@ -405,7 +404,7 @@ double Residual(Mat H, Mat X1, Mat X2)
 	Mat dx = X2_.row(0) - X2.row(0);
 	Mat dy = X2_.row(1) - X2.row(1);
 	Mat d_x_y = (dx.mul(dx) + dy.mul(dy));
-	//·µ»ØÖµerr
+	
 	double err = sum(d_x_y).val[0];
 
 	return err;
@@ -414,14 +413,13 @@ double Residual(Mat H, Mat X1, Mat X2)
 void Nelder_Mead(Mat &H0, Mat &pt_bg_inlier, Mat &cor_smooth_inlier, int max_iter, double eps, Mat &H, bool show_best)
 {
 	const int Max_time = max_iter;
-	//Í¸ÊÓ±ä»»¾ØÕó£¬¼´µ¥Ó¦ÐÔ¾ØÕóÊ±£¬ÓÐ8¸ö±äÁ¿
+	
 	int var_num = 8;
 	vector<Mat> vx(var_num + 1);
 	H0.copyTo(vx[0]);
 	double vf[9] = { 0, 0, 0, 0, 0, 0, 0 };
 	vf[0] = Residual(H0, pt_bg_inlier, cor_smooth_inlier);
-	//Ö»½«µ¥Ó¦¾ØÕóµÄÇ°Á½ÐÐ´úÈë¼ÆËã
-	//cout<<H0<<endl;
+	
 	for (int i = 0; i<3; i++)
 	{
 		for (int j = 0; j<3; j++)
@@ -429,18 +427,18 @@ void Nelder_Mead(Mat &H0, Mat &pt_bg_inlier, Mat &cor_smooth_inlier, int max_ite
 			if (!(i == 2 && j == 2))
 			{
 				H0.copyTo(vx[i * 3 + j + 1]);
-				if ((fabs(((double*)H0.data)[i * 3 + j])) < 0.00005)	//Èç¹ûÌ«Ð¡£¬ÔòÈÏÎª¼ÓÉÏÒ»¸öºÜÐ¡µÄÈÅ¶¯
+				if ((fabs(((double*)H0.data)[i * 3 + j])) < 0.00005)	
 					((double*)vx[i * 3 + j + 1].data)[i * 3 + j] += 0.005;
 				else
-					((double*)vx[i * 3 + j + 1].data)[i * 3 + j] /= 1.05;		//·ñÔò£¬³ËÒÔÒ»¸öÏµÊý
-				//²ÎÊýÏÞ¶¨
+					((double*)vx[i * 3 + j + 1].data)[i * 3 + j] /= 1.05;		
+				
 				//constrain_coefficients(vx[i*3+j+1]);
 				//cout<<vx[i*3+j+1]<<endl;
-				vf[i * 3 + j + 1] = Residual(vx[i * 3 + j + 1], pt_bg_inlier, cor_smooth_inlier);	//¼ÆËãÆä¶ÔÓ¦Îó²î
+				vf[i * 3 + j + 1] = Residual(vx[i * 3 + j + 1], pt_bg_inlier, cor_smooth_inlier);	
 			}
 		}
 	}
-	//ÅÅÐò
+	
 	quick_sort(vf, vx, 0, var_num);
 
 	double max_of_this = 0;
@@ -469,8 +467,7 @@ void Nelder_Mead(Mat &H0, Mat &pt_bg_inlier, Mat &cor_smooth_inlier, int max_ite
 			if (max_iter % 100 == 0)
 				cout << max_err << "\t";
 		}
-		//Èç¹û¸÷¸ö²ÎÊýµÄ×î´óÎó²î×ã¹»Ð¡£¬ÔòÌø³öÑ­»·
-		//ÓÐÊ±ºò£¬¹ì¼£Êý±È½ÏÉÙ£¬2*pt_bg_inlier.cols¾Í±È½ÏÐ¡£¬ÊÕÁ²Ìõ¼þ¾Í»áÌ«¿Á¿Ì
+		
 		if (max_err < eps && (vf[0] <= 50))
 		{
 			if (show_best)
@@ -481,7 +478,7 @@ void Nelder_Mead(Mat &H0, Mat &pt_bg_inlier, Mat &cor_smooth_inlier, int max_ite
 			}
 			break;
 		}
-		//Ëã·¨ºËÐÄÄ£¿é
+		
 		Mat best = vx[0];
 		double fbest = vf[0];
 		Mat soso = vx[var_num - 1];
@@ -493,17 +490,16 @@ void Nelder_Mead(Mat &H0, Mat &pt_bg_inlier, Mat &cor_smooth_inlier, int max_ite
 			center += vx[i];
 		center /= var_num;
 		Mat r = 2 * center - worst;
-		//²ÎÊýÏÞ¶¨
+		
 		//constrain_coefficients(r);
 		double fr = Residual(r, pt_bg_inlier, cor_smooth_inlier);
 		if (fr < fbest)
 		{
-			//±È×îºÃµÄ½á¹û»¹ºÃ£¬ËµÃ÷·½ÏòÕýÈ·£¬¿¼²ìÀ©Õ¹µã£¬ÒÔÆÚÍû¸ü¶àµÄÏÂ½µ
+			
 			Mat e = 2 * r - center;
-			//²ÎÊýÏÞ¶¨
 			//constrain_coefficients(e);
 			double fe = Residual(e, pt_bg_inlier, cor_smooth_inlier);
-			//ÔÚÀ©Õ¹µãºÍ·´ÉäµãÖÐÑ¡Ôñ½ÏÓÅÕßÈ¥Ìæ»»×î²îµã
+			
 			if (fe < fr)
 			{
 				vx[var_num] = e;//e.clone();
@@ -519,46 +515,46 @@ void Nelder_Mead(Mat &H0, Mat &pt_bg_inlier, Mat &cor_smooth_inlier, int max_ite
 		{
 			if (fr < fsoso)
 			{
-				//±È´Î²î½á¹ûºÃ£¬ÄÜ¸Ä½ø
+				
 				vx[var_num] = r;//r.clone();
 				vf[var_num] = fr;
 			}
-			else//±È´Î²î½á¹û»¹²î£¬Ó¦¿¼ÂÇÑ¹Ëõµã
+			else
 			{
-				//µ±Ñ¹ËõµãÎÞ·¨µÃµ½¸üÓÅÖµµÄÊ±ºò£¬¿¼ÂÇÊÕËõ
+				
 				bool shrink = false;
 				if (fr < fworst)
 				{
-					//ÓÉÓÚrµã¸üÓÅ£¬ËùÒÔÏòrµãµÄ·½ÏòÕÒÑ¹Ëõµã
+					
 					Mat c = (r + center) / 2;
-					//²ÎÊýÏÞ¶¨
+					
 					//constrain_coefficients(c);
 					double fc = Residual(c, pt_bg_inlier, cor_smooth_inlier);
 					if (fc < fr)
 					{
-						//È·¶¨´ÓrÑ¹ËõÏòc¿ÉÒÔ¸Ä½ø
+						
 						vx[var_num] = c;//c.clone();
 						vf[var_num] = fc;
 					}
 					else
-						//·ñÔòµÄ»°£¬×¼±¸½øÐÐÊÕËõ
+						
 						shrink = true;
 				}
 				else
 				{
-					//ÓÉÓÚwµã¸üÓÅ£¬ËùÒÔÏòwµãµÄ·½ÏòÕÒÑ¹Ëõµã
+					
 					Mat c = (worst + center) / 2;
-					//²ÎÊýÏÞ¶¨
+					
 					//constrain_coefficients(c);
 					double fc = Residual(c, pt_bg_inlier, cor_smooth_inlier);
 					if (fc < fr)
 					{
-						//È·¶¨´ÓrÑ¹ËõÏòc¿ÉÒÔ¸Ä½ø
+						
 						vx[var_num] = c;//c.clone();
 						vf[var_num] = fc;
 					}
 					else
-						//·ñÔòµÄ»°£¬×¼±¸½øÐÐÊÕËõ
+						
 						shrink = true;
 				}
 				if (shrink)
@@ -566,7 +562,7 @@ void Nelder_Mead(Mat &H0, Mat &pt_bg_inlier, Mat &cor_smooth_inlier, int max_ite
 					for (int i = 1; i<var_num + 1; i++)
 					{
 						Mat temp = (vx[i] + best) / 2;
-						//²ÎÊýÏÞ¶¨
+						
 						//constrain_coefficients(temp);
 						vx[i] = temp;//temp.clone();
 						vf[i] = Residual(vx[i], pt_bg_inlier, cor_smooth_inlier);
@@ -574,16 +570,14 @@ void Nelder_Mead(Mat &H0, Mat &pt_bg_inlier, Mat &cor_smooth_inlier, int max_ite
 				}
 			}
 		}
-		//ÅÅÐò
+		
 		quick_sort(vf, vx, 0, var_num);
 		//if(max_iter>900)
 		//	cout<<"×îÐ¡Îó²îÊÇ"<<vf[0]<<endl;
 		max_iter--;
 	}
 	H = vx[0].clone();
-	//cout<<"×îÓÅ½á¹û"<<H<<endl;
-	//cout<<"×îÐ¡Îó²îÊÇ"<<vf[0]<<endl;
-	//cout<<Residual(H0, pt_bg_inlier, cor_smooth_inlier);
+	
 }
 
 Mat cal_cor(Mat H, Mat point1)
@@ -599,14 +593,13 @@ Mat cal_cor(Mat H, Mat point1)
 
 Mat Homography_Nelder_Mead_with_outliers(vector<Point2d> &pt_bg_cur, vector<Point2d> &Trj_cor_smooth, int max_iter/*, Mat& outliers, int height*/)
 {
-	//int64 st, et;
-	//st = cvGetTickCount();
+	
 	int RANSAC_times = 500;
 	double thresh_inlier = 1;// 25 / ((720.0 / height)*(720.0 / height));//80/(scale*scale);
 	int num = pt_bg_cur.size();
-	//¹¹Ôì¹éÒ»»¯×ø±êÏòÁ¿µÄ¾ØÕó
+	
 	Mat pt_bg = Mat::ones(3, num, CV_64F), cor_smooth = Mat::ones(3, num, CV_64F);
-	//ÓÃÓÚ²úÉúËæ»úÐòÁÐ
+	
 	vector<int>index_shuffle(num);
 	for (int i = 0; i<num; i++)
 	{
@@ -617,17 +610,17 @@ Mat Homography_Nelder_Mead_with_outliers(vector<Point2d> &pt_bg_cur, vector<Poin
 		((double*)cor_smooth.data)[i + num] = Trj_cor_smooth[i].y;
 	}
 
-	//RANSACËã·¨£¬×î¶à100´ÎÑ­»·
 	srand((unsigned)time(0));
-	Mat OK = Mat::zeros(RANSAC_times, num, CV_8U);			//ºÃµÄ½á¹û£¬1±íÊ¾¸ÃÊý¾ÝÓëÄ£ÐÍÆ¥ÅäµÃºÃ£¬0Îª²»ºÃ
-	vector<int> Score(RANSAC_times);								//ÆÀ¼ÛÎó²îµÃ·Ö£¬µÃ·ÖÔ½¸ß±íÊ¾Ä£ÐÍÔ½ºÃ
-	vector<Mat> H(RANSAC_times);									//Ã¿´ÎµÄµ¥Ó¦¾ØÕó
-	vector<double> Total_err(RANSAC_times);						//×ÜÌåÎó²î
+	Mat OK = Mat::zeros(RANSAC_times, num, CV_8U);			
+	vector<int> Score(RANSAC_times);								
+	vector<Mat> H(RANSAC_times);									
+	vector<double> Total_err(RANSAC_times);						
 	Mat thresh = thresh_inlier*Mat::ones(1, num, CV_64F);
 	Mat every_outliers = Mat::zeros(RANSAC_times, num, CV_8U);
 	int best_index = -1;		//×îºÃÄ£ÐÍµÄË÷ÒýÖµ
 	int best = -1;				//ScoreµÄ×î´óÖµ
-	//ËÑ²»µ½ÔÚºÏÊÊ·¶Î§ÄÚµÄ×îÓÅÖµ£¬¾ÍÔÙÑ­»·Ò»´Î
+	
+
 	while (best == -1)
 	{
 		for (int t = 0; t<RANSAC_times; t++)

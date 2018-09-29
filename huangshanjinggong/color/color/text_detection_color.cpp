@@ -868,20 +868,7 @@ extern "C" __declspec(dllexport) int __stdcall textdetectColor(const char* srcc,
 		}
 		warp_H.push_back(temp_H);
 	}
-	/*Mat temp_H(3, 3, CV_64FC1);
-
-	temp_H.row(0).col(0) = 0.999;
-	temp_H.row(1).col(1) = 1;
-	temp_H.row(2).col(2) = 1;
-	temp_H.row(0).col(1) = 0;
-	temp_H.row(0).col(2) = -0.222;
-	temp_H.row(1).col(0) = 0;
-	temp_H.row(1).col(2) = 0.517;
-	temp_H.row(2).col(0) = 0;
-	temp_H.row(2).col(1) = 0;
-
-
-	warp_H.push_back(temp_H);*/
+	
 	cout << "warp_H.size()" << warp_H.size() << endl;
 
 

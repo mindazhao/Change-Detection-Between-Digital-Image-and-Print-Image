@@ -10,14 +10,12 @@
 #include <opencv2/features2d/features2d.hpp>
 #include<opencv2/nonfree/nonfree.hpp>
 #include<opencv2/legacy/legacy.hpp>
-#include "ViKey.h"
 #include "callback.h"
 
 using namespace std;
 using namespace cv;
 double pi = 3.1415926;
-//int clusterCount = 1;
-//int nfeature = 1000 * clusterCount;
+
 
 class location
 {
@@ -75,45 +73,16 @@ vector< size_t>  sort_indexes(const vector< T>  & v) {
 extern "C" __declspec(dllexport) int compare(char* src_str, char* dst_str, int  clusterCount, char* path, int block_w, int block_h)
 {
 
-	DWORD dwRetCode;
-	DWORD dwCount;
-	WORD Index;
-	DWORD dwHID;
-	dwRetCode = VikeyFind(&dwCount);
-	if (dwRetCode)
-	{
-		printf("\nERROR: Please Insert the Key! \n");
-		return -1;
-	}
-
-	Index = 0;
-
-	dwRetCode = VikeyGetHID(Index, &dwHID);
-	if (dwRetCode)
-	{
-		printf("\nERROR: Failed to Get the KeyID! \n");
-		return -1;
-	}
-
-	printf("VikeyGetHID:%u\n", dwHID);
-	int hid = (int)dwHID;
-	int hid_10 = 0;
-	for (int i = 0; i < 9; i++)
-	{
-		hid_10 += hid % 10;
-		hid /= 10;
-	}
+	
 
 
-	char UserPassWord[8];
 
-	UserPassWord[0] = 'u';
 
 	Ptr<DescriptorMatcher> descriptor_matcher;
 	string detectorType = "SIFT";
 	string descriptorType = "SIFT";
 	string matcherType = "FlannBased";
-	UserPassWord[1] = 's';
+
 	Ptr<FeatureDetector> featureDetector;
 	Ptr<DescriptorExtractor> descriptorExtractor;
 	if (!createDetectorDescriptorMatcher(detectorType, descriptorType, matcherType, featureDetector, descriptorExtractor, descriptor_matcher))
@@ -126,7 +95,7 @@ extern "C" __declspec(dllexport) int compare(char* src_str, char* dst_str, int  
 	string p = path;
 	src = imread(s);
 	dst = imread(d);
-	UserPassWord[2] = 't';
+
 	Mat dst_resize, src_resize;
 	//20171030 new-add
 	double resize_rate = 1;
@@ -139,7 +108,7 @@ extern "C" __declspec(dllexport) int compare(char* src_str, char* dst_str, int  
 		resize(src, src_resize, Size(resize_rate*src.size().width, resize_rate*src.size().height), 0, 0, INTER_LINEAR);
 
 	}
-	UserPassWord[3] = 'c';
+	
 	if (src_resize.size().width > 5000 || src_resize.size().height > 5000)
 	{
 		resize_rate = resize_rate * 5000 / double(MAX(src_resize.size().height, src_resize.size().width));
@@ -150,7 +119,7 @@ extern "C" __declspec(dllexport) int compare(char* src_str, char* dst_str, int  
 	imwrite(p + "src_resize.jpg", src_resize);
 	imwrite(p + "dst_resize.jpg", dst_resize);
 	vector<KeyPoint>kp1, kp2;
-	UserPassWord[4] = '0';
+	
 	int sift_num = 0;
 	if (clusterCount == 1)
 		sift_num = 5000;
@@ -173,12 +142,12 @@ extern "C" __declspec(dllexport) int compare(char* src_str, char* dst_str, int  
 		SiftFeatureDetector siftdtc_img2(kp1.size()*clusterCount, 3, 0.01, 10, 1.6);
 		siftdtc_img2.detect(dst, kp2);
 	}
-	UserPassWord[5] = '0';
+	
 
 	m_RecInfoCall(5);
 	Ptr<DescriptorExtractor> descriptor_extractor = DescriptorExtractor::create("SIFT"); 
 	Mat descriptor1, descriptor2;
-	UserPassWord[6] = '3';
+	
 	if (change_flag == 0)
 	{
 		descriptor_extractor->compute(src, kp1, descriptor1);
@@ -197,7 +166,7 @@ extern "C" __declspec(dllexport) int compare(char* src_str, char* dst_str, int  
 	const float minRatio = 1.f / 1.5f;
 	int num = 0;
 	m_RecInfoCall(10);
-	UserPassWord[7] = '0';
+	
 	for (size_t i = 0; i < knnMatches.size(); i++)
 	{
 		cv::DMatch& bestMatch = knnMatches[i][0];
@@ -225,10 +194,10 @@ extern "C" __declspec(dllexport) int compare(char* src_str, char* dst_str, int  
 	H_sum.resize(clusterCount);
 	vector<CvRect>rect_sum;
 	rect_sum.resize(clusterCount);
-	Mat point1(3, 1, CV_64FC1);//×óÉÏ
-	Mat point2(3, 1, CV_64FC1);//ÓÒÏÂ
-	Mat point3(3, 1, CV_64FC1);//ÓÒÉÏ
-	Mat point4(3, 1, CV_64FC1);//×óÏÂ
+	Mat point1(3, 1, CV_64FC1);
+	Mat point2(3, 1, CV_64FC1);
+	Mat point3(3, 1, CV_64FC1);
+	Mat point4(3, 1, CV_64FC1);
 	point1.row(0).col(0) = 0.0;
 	point1.row(1).col(0) = 0.0;
 	point1.row(2).col(0) = 1.0;
@@ -264,17 +233,7 @@ extern "C" __declspec(dllexport) int compare(char* src_str, char* dst_str, int  
 
 
 
-	dwRetCode = VikeyUserLogin(Index, UserPassWord);
-
-	if (dwRetCode)
-	{
-		printf("\nERROR: No Permission to Use the Software! \n");
-		return -1;
-	}
-	else
-	{
-		cout << "vikey success!";
-	}
+	
 
 	if (block_w != -1 && block_h != -1)
 	{
@@ -316,24 +275,9 @@ extern "C" __declspec(dllexport) int compare(char* src_str, char* dst_str, int  
 		double center_y = double(src.size().height) / 2;
 
 		int parameter_kernel = 0;
-		WORD wAddr = 0;
-		WORD wLen = 128;
-		BYTE buffer[1024];
-		dwRetCode = VikeyReadData(Index, wAddr, wLen, buffer);
-		if (dwRetCode)
-		{
-			printf("Failed to read data!\n");
-			return -1;
-		}
-		else
-		{
+		
 
-			parameter_kernel = buffer[64];
-		}
-		if (parameter_kernel != 0)
-			parameter_kernel = hid_10^parameter_kernel;
-
-		//parameter_kernel = 180;
+		parameter_kernel = 180;
 		for (int i = 0; i < matches.size(); i++)
 		{
 

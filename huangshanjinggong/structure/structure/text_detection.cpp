@@ -472,9 +472,9 @@ void Nelder_Mead(Mat &H0, Mat &pt_bg_inlier, Mat &cor_smooth_inlier, int max_ite
 		{
 			if (show_best)
 			{
-				cout << "µü´ú´ÎÊý:" << Max_time - max_iter << endl;
-				cout << "×î´ó×îÐ¡Ïà²îÎª:" << max_err << endl;
-				cout << "ÒÑÕÒµ½×îÓÅ½á¹û£¬×îÐ¡Ïà²îÎª:" << vf[0] << endl;
+				cout << "the time of iteration" << Max_time - max_iter << endl;
+				cout << "the gap of max and min" << max_err << endl;
+				cout << "find the best result and  is" << vf[0] << endl;
 			}
 			break;
 		}
@@ -572,8 +572,7 @@ void Nelder_Mead(Mat &H0, Mat &pt_bg_inlier, Mat &cor_smooth_inlier, int max_ite
 		}
 		
 		quick_sort(vf, vx, 0, var_num);
-		//if(max_iter>900)
-		//	cout<<"×îÐ¡Îó²îÊÇ"<<vf[0]<<endl;
+		
 		max_iter--;
 	}
 	H = vx[0].clone();
@@ -591,15 +590,17 @@ Mat cal_cor(Mat H, Mat point1)
 
 
 
-Mat Homography_Nelder_Mead_with_outliers(vector<Point2d> &pt_bg_cur, vector<Point2d> &Trj_cor_smooth, int max_iter/*, Mat& outliers, int height*/)
+//计算单应矩阵，替换findHomography函数,max_iter为Nelder-Mead算法最大迭代次数
+Mat Homography_Nelder_Mead_with_outliers(vector<Point2d> &pt_bg_cur, vector<Point2d> &Trj_cor_smooth, int max_iter, Mat& outliers, int height)
 {
-	
-	int RANSAC_times = 500;
-	double thresh_inlier = 1;// 25 / ((720.0 / height)*(720.0 / height));//80/(scale*scale);
+	//int64 st, et;
+	//st = cvGetTickCount();
+	int RANSAC_times = 1000;
+	double thresh_inlier = 35;//30;// 25 / ((720.0 / height)*(720.0 / height));//80/(scale*scale);
 	int num = pt_bg_cur.size();
-	
+	//构造归一化坐标向量的矩阵
 	Mat pt_bg = Mat::ones(3, num, CV_64F), cor_smooth = Mat::ones(3, num, CV_64F);
-	
+	//用于产生随机序列
 	vector<int>index_shuffle(num);
 	for (int i = 0; i<num; i++)
 	{
@@ -610,31 +611,31 @@ Mat Homography_Nelder_Mead_with_outliers(vector<Point2d> &pt_bg_cur, vector<Poin
 		((double*)cor_smooth.data)[i + num] = Trj_cor_smooth[i].y;
 	}
 
+	//RANSAC算法，最多100次循环
 	srand((unsigned)time(0));
-	Mat OK = Mat::zeros(RANSAC_times, num, CV_8U);			
-	vector<int> Score(RANSAC_times);								
-	vector<Mat> H(RANSAC_times);									
-	vector<double> Total_err(RANSAC_times);						
-	Mat thresh = thresh_inlier*Mat::ones(1, num, CV_64F);
+	Mat OK = Mat::zeros(RANSAC_times, num, CV_8U);			//好的结果，1表示该数据与模型匹配得好，0为不好
+	vector<int> Score(RANSAC_times);								//评价误差得分，得分越高表示模型越好
+	vector<Mat> H(RANSAC_times);									//每次的单应矩阵
+	vector<double> Total_err(RANSAC_times);						//总体误差
+	Mat thresh = thresh_inlier * Mat::ones(1, num, CV_64F);
 	Mat every_outliers = Mat::zeros(RANSAC_times, num, CV_8U);
-	int best_index = -1;		//×îºÃÄ£ÐÍµÄË÷ÒýÖµ
-	int best = -1;				//ScoreµÄ×î´óÖµ
-	
-
+	int best_index = -1;		//最好模型的索引值
+	int best = -1;				//Score的最大值
+								//搜不到在合适范围内的最优值，就再循环一次
 	while (best == -1)
 	{
 		for (int t = 0; t<RANSAC_times; t++)
 		{
-			//Ëæ»ú³éÈ¡ËÄ¸öµã£¬¹¹Ôì×ó±ßA¾ØÕó
+			//随机抽取四个点，构造左边A矩阵
 			vector<int> rand_set;
-			//ÏÈÓÃshuffleËã·¨Éú³ÉËæ»úÐòÁÐ
+			//先用shuffle算法生成随机序列
 			random_shuffle(index_shuffle.begin(), index_shuffle.end(), myrandom);
 			rand_set.push_back(index_shuffle[0]);
 			rand_set.push_back(index_shuffle[1]);
 			rand_set.push_back(index_shuffle[2]);
 			rand_set.push_back(index_shuffle[3]);
 
-			//AÒ»¶¨ÒªÉè¶¨Îª¾Ö²¿±äÁ¿£¡£¡£¡ÒòÎªÏÂÃæÊ¹ÓÃ+=£¬¶ø²»ÊÇ¸³Öµ=£¡£¡£¡£¡
+			//A一定要设定为局部变量！！！因为下面使用+=，而不是赋值=！！！！
 			Mat A = Mat::zeros(12, 9, CV_64F);
 			int j = 0;
 			int k = rand_set[0];	//0 <= k < num
@@ -642,8 +643,8 @@ Mat Homography_Nelder_Mead_with_outliers(vector<Point2d> &pt_bg_cur, vector<Poin
 			//cout<<hat<<endl;
 			double x = ((double*)pt_bg.data)[k];
 			double y = ((double*)pt_bg.data)[k + num];
-			A.rowRange(j * 3, j * 3 + 3).colRange(0, 3) += hat*x;
-			A.rowRange(j * 3, j * 3 + 3).colRange(3, 6) += hat*y;
+			A.rowRange(j * 3, j * 3 + 3).colRange(0, 3) += hat * x;
+			A.rowRange(j * 3, j * 3 + 3).colRange(3, 6) += hat * y;
 			A.rowRange(j * 3, j * 3 + 3).colRange(6, 9) += hat;
 
 			++j;
@@ -652,8 +653,8 @@ Mat Homography_Nelder_Mead_with_outliers(vector<Point2d> &pt_bg_cur, vector<Poin
 			//cout<<hat<<endl;
 			x = ((double*)pt_bg.data)[k];
 			y = ((double*)pt_bg.data)[k + num];
-			A.rowRange(j * 3, j * 3 + 3).colRange(0, 3) += hat*x;
-			A.rowRange(j * 3, j * 3 + 3).colRange(3, 6) += hat*y;
+			A.rowRange(j * 3, j * 3 + 3).colRange(0, 3) += hat * x;
+			A.rowRange(j * 3, j * 3 + 3).colRange(3, 6) += hat * y;
 			A.rowRange(j * 3, j * 3 + 3).colRange(6, 9) += hat;
 
 			++j;
@@ -662,8 +663,8 @@ Mat Homography_Nelder_Mead_with_outliers(vector<Point2d> &pt_bg_cur, vector<Poin
 			//cout<<hat<<endl;
 			x = ((double*)pt_bg.data)[k];
 			y = ((double*)pt_bg.data)[k + num];
-			A.rowRange(j * 3, j * 3 + 3).colRange(0, 3) += hat*x;
-			A.rowRange(j * 3, j * 3 + 3).colRange(3, 6) += hat*y;
+			A.rowRange(j * 3, j * 3 + 3).colRange(0, 3) += hat * x;
+			A.rowRange(j * 3, j * 3 + 3).colRange(3, 6) += hat * y;
 			A.rowRange(j * 3, j * 3 + 3).colRange(6, 9) += hat;
 
 			//Mat temp = A.rowRange(j*3, j*3+3).colRange(0,3).clone();
@@ -674,24 +675,24 @@ Mat Homography_Nelder_Mead_with_outliers(vector<Point2d> &pt_bg_cur, vector<Poin
 			//cout<<hat<<endl;
 			x = ((double*)pt_bg.data)[k];
 			y = ((double*)pt_bg.data)[k + num];
-			A.rowRange(j * 3, j * 3 + 3).colRange(0, 3) += hat*x;
-			A.rowRange(j * 3, j * 3 + 3).colRange(3, 6) += hat*y;
+			A.rowRange(j * 3, j * 3 + 3).colRange(0, 3) += hat * x;
+			A.rowRange(j * 3, j * 3 + 3).colRange(3, 6) += hat * y;
 			A.rowRange(j * 3, j * 3 + 3).colRange(6, 9) += hat;
 
 			//cout<<A<<endl;
 			//ofstream A_file("A_file.txt");
 			//A_file<<A<<endl;
-			//SVD·Ö½âÉú³ÉVT£¬µÚ9ÐÐÎª×îÐ¡ÌØÕ÷Öµ¶ÔÓ¦µÄÌØÕ÷ÏòÁ¿
+			//SVD分解生成VT，第9行为最小特征值对应的特征向量
 			SVD thissvd(A, SVD::FULL_UV);
 			Mat VT = thissvd.vt;
 			//cout<<VT<<endl;
-			//Éú³É±¾´ÎRANSACÑ­»·¶ÔÓ¦µÄ¹éÒ»»¯µÄµ¥Ó¦¾ØÕó
+			//生成本次RANSAC循环对应的归一化的单应矩阵
 			H[t] = (Mat_<double>(3, 3) << ((double*)VT.data)[72], ((double*)VT.data)[75], ((double*)VT.data)[78], ((double*)VT.data)[73], ((double*)VT.data)[76], ((double*)VT.data)[79], ((double*)VT.data)[74], ((double*)VT.data)[77], ((double*)VT.data)[80]);// / ((double*)VT.data)[80];
-			//cout<<H[t]<<endl;
+																																																																  //cout<<H[t]<<endl;
 			H[t] /= ((double*)H[t].data)[8];
 			//cout<<H[t]<<endl;
 
-			//ÆÀ¼ÛÎó²î
+			//评价误差
 			Mat X2_ = H[t] * pt_bg;
 			//cout<<X2_<<endl;
 			Mat X2_row_3 = Mat::zeros(3, num, CV_64F);
@@ -704,13 +705,13 @@ Mat Homography_Nelder_Mead_with_outliers(vector<Point2d> &pt_bg_cur, vector<Poin
 			Mat dy = X2_.row(1) - cor_smooth.row(1);
 			Mat d_x_y = (dx.mul(dx) + dy.mul(dy));
 			//cout<<d_x_y<<endl;
-			//½á¹û¼ÇÂ¼ÔÚTotal_err¡¢OKºÍScore¾ØÕóÖÐ
+			//结果记录在Total_err、OK和Score矩阵中
 			Total_err[t] = sum(d_x_y).val[0];
 			OK.row(t) = (d_x_y < thresh) / 255.f;
 			//cout<<OK.row(t)<<endl;
 			Scalar sum_o = sum(OK.row(t));
 			Score[t] = sum(OK.row(t)).val[0];
-			//¼ÇÂ¼×îºÃ½á¹ûµÄË÷ÒýÖµ
+			//记录最好结果的索引值
 			if (Score[t] > best)
 			{
 				//cout<<H[t]<<endl;
@@ -720,7 +721,7 @@ Mat Homography_Nelder_Mead_with_outliers(vector<Point2d> &pt_bg_cur, vector<Poin
 					best_index = t;
 				}
 			}
-			else if (Score[t] == best)	//Ä£ÐÍÆ¥ÅäÊýÁ¿Ò»ÖÂÊ±£¬È¡Îó²î×îÐ¡µÄ
+			else if (Score[t] == best)	//模型匹配数量一致时，取误差最小的
 			{
 				if (Total_err[t] < Total_err[best_index])
 				{
@@ -734,11 +735,11 @@ Mat Homography_Nelder_Mead_with_outliers(vector<Point2d> &pt_bg_cur, vector<Poin
 		}
 	}
 	//et = cvGetTickCount();
-	//printf("RANSACÑ­»·£¬100´ÎÊ±¼äÎª: %f\n", (et-st)/(double)cvGetTickFrequency()/1000.);
-	//cout<<"Æ¥ÅäÉÏÁË"<<best<<"¸ö"<<endl;
+	//printf("RANSAC循环，100次时间为: %f\n", (et-st)/(double)cvGetTickFrequency()/1000.);
+	//cout<<"匹配上了"<<best<<"个"<<endl;
 	//outliers = OK.row(best_index).clone();
 	//cout<<outliers<<endl;
-	//ÌáÈ¡³öÄÚµã
+	//提取出内点
 	Mat pt_bg_inlier = Mat::zeros(3, best, CV_64F), cor_smooth_inlier = Mat::zeros(3, best, CV_64F);
 	int inlier_ind = 0;
 	//cout<<"OK.row(best_index)"<<endl;
@@ -752,8 +753,8 @@ Mat Homography_Nelder_Mead_with_outliers(vector<Point2d> &pt_bg_cur, vector<Poin
 			inlier_ind++;
 		}
 	}
-	//Nelder-MeadËã·¨ËÑË÷×îÓÅÖµ
-	//Ç¿ÖÆµ¥Ó¦¾ØÕó±äÎª·ÂÉä¾ØÕó£¬¼´µÚ3ÐÐÇ°Á½¸öÔªËØÎª0
+	//Nelder-Mead算法搜索最优值
+	//强制单应矩阵变为仿射矩阵，即第3行前两个元素为0
 	Mat H0 = H[best_index];
 	//Mat H_best = Mat::zeros(3, 3, CV_64F);
 	//H0.row(2).col(0) = 0.f;
@@ -764,7 +765,7 @@ Mat Homography_Nelder_Mead_with_outliers(vector<Point2d> &pt_bg_cur, vector<Poin
 	bool show_ransac = false;
 	Nelder_Mead(H0, pt_bg_inlier, cor_smooth_inlier, max_iter, eps, H_NM, show_ransac);
 	//et = cvGetTickCount();
-	//printf("NMËÑË÷Ê±¼ä: %f\n", (et-st)/(double)cvGetTickFrequency()/1000.);
+	//printf("NM搜索时间: %f\n", (et-st)/(double)cvGetTickFrequency()/1000.);
 	return H_NM;
 }
 Mat hist_extend(Mat src, int &flag, int range)
@@ -970,36 +971,7 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 	//if (!(st.wYear == 2017 || (st.wYear == 2018 && st.wMonth<7)))
 	//	return -1;
 
-	cout << "text detect" << endl;
-	DWORD dwRetCode;
-	DWORD dwCount;
-	WORD Index;
-	DWORD dwHID;
-	dwRetCode = VikeyFind(&dwCount);
-	if (dwRetCode)
-	{
-		printf("\nERROR: Please Insert the Key! \n");
-		return -1;
-	}
-
-	Index = 0;
-
-	dwRetCode = VikeyGetHID(Index, &dwHID);
-	if (dwRetCode)
-	{
-		printf("\nERROR: Failed to Get the KeyID! \n");
-		return -1;
-	}
-
-
-	int hid = (int)dwHID;
-	int hid_10 = 0;
-	for (int i = 0; i < 9; i++)
-	{
-		hid_10 += hid % 10;
-		hid /= 10;
-	}
-
+	
 
 
 
@@ -1017,35 +989,30 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 	vector<Mat> channels_dst;
 	/*src_whole = imread("pan1.jpg");
 	dst_whole = imread("pan2.jpg");*/
-	char UserPassWord[8];
+
 	string src_img = srcc;
 	string dst_img = dstt;
 	string p = path;
-	UserPassWord[0] = 'u';
+
 
 	cout << "src: " << srcc << endl << "dst: " << dstt << endl;
 	cout << "path: " << p << endl;
 	cout << "mat: " << matrix << endl;
 	cout << "w: " << w << " h: " << h << endl;
-	UserPassWord[1] = 's';
+	
 	src_whole = imread(src_img);
 	dst_whole = imread(dst_img);
-	//string p = "d://";
-	//int x_label = 0;
-	//int y_label = 0;
-	//int w_label = 3996;//2677;
-	//int h_label = 3346;//1000
-	UserPassWord[2] = 't';
+
 	int x_label = x;
 	int y_label = y;
 	int w_label = w;
 	int h_label = h;
-	UserPassWord[3] = 'c';
+
 	vector<Mat>warp_H;
 	string mats = matrix;
 	istringstream iss(mats);
 	string sub;
-	UserPassWord[4] = '0';
+
 	
 	while (getline(iss, sub, ';')) {
 		istringstream isssub(sub);
@@ -1068,31 +1035,14 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 		warp_H.push_back(temp_H);
 	}
 	
-	/*Mat temp_H(3, 3, CV_64FC1);
 
-	temp_H.row(0).col(0) = 0.999;
-	temp_H.row(1).col(1) = 1;
-	temp_H.row(2).col(2) = 1;
-	temp_H.row(0).col(1) = 0;
-	temp_H.row(0).col(2) = -0.222;
-	temp_H.row(1).col(0) = 0;
-	temp_H.row(1).col(2) = 0.517;
-	temp_H.row(2).col(0) = 0;
-	temp_H.row(2).col(1) = 0;*/
-
-
-	/*warp_H.push_back(temp_H);*/
 	m_RecInfoCall(30);
 	double progress = 0;
-	UserPassWord[5] = '0';
+
 	double delta = 0.65 / warp_H.size();
 	cout << "warp_H.size:" << warp_H.size() << endl;
 
 
-
-
-	UserPassWord[6] = '3';
-	UserPassWord[7] = '0';
 	/////////////////////////////////////////////
 	if (warp_H.size() == 1){
 
@@ -1181,16 +1131,7 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 			point_src.push_back(pt_temp_query);
 			point_dst.push_back(pt_temp_train);
 		}
-		dwRetCode = VikeyUserLogin(Index, UserPassWord);
-		if (dwRetCode)
-		{
-			printf("\nERROR: No Permission to Use the Software! \n");
-			return -1;
-		}
-		else
-		{
-			cout << "vikey success!";
-		}
+		
 		progress = 0.3;
 		src_result.setTo(0);
 		//2ÖÐµÄµã=t*1ÖÐµÄµã;Ò²¾ÍÊÇ½«1±ä»¯µ½2ÖÐ
@@ -1204,27 +1145,8 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 
 
 		int parameter_kernel = 0;
-		WORD wAddr = 0;
-		WORD wLen = 128;
-		BYTE buffer[1024];
-		dwRetCode = VikeyReadData(Index, wAddr, wLen, buffer);
-		if (dwRetCode)
-		{
-			printf("Failed to read data!\n");
-			return -1;
-		}
-		else
-		{
-
-			parameter_kernel = buffer[65];
-		}
-		if (parameter_kernel != 0)
-			parameter_kernel = hid_10^parameter_kernel;
-
-
-
-		m_RecInfoCall(50);
-		//parameter_kernel = 50;
+		
+		parameter_kernel = 50;
 		int block_h = src.size().height / parameter_kernel;// int(double(MIN(src.size().height, src.size().width)) / 1000 * 30);
 		int block_w = src.size().width / parameter_kernel;
 		for (int i = 0; i <= src.size().height - block_h; i = i + block_h)
@@ -1256,7 +1178,7 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 				double y2 = MIN(MAX(point2.at<double>(1, 0), 0), dst.size().height - h);
 				int drift_x = 3; //int(MAX(3, MIN(0.3*w, 5)));
 				int drift_y = 3;// int(MAX(3, MIN(0.3*h, 5)));
-				//Ìí¼ÓÅÐ¶Ï//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				//cout << "x1===" << x << " y1===" << y << endl;
 				//cout << "x2===" << x2 << " y2===" << y2 << endl;
 
@@ -1286,7 +1208,7 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 					}
 				}
 			}
-		//×îºóÒ»ÐÐ
+		//
 		m_RecInfoCall(55);
 		for (int j = 0; j <= src.size().width - block_w; j = j + block_w)
 			//for (int i = 0; i < boundRect_src.size(); i++)
@@ -1316,7 +1238,7 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 			double y2 = MIN(MAX(point2.at<double>(1, 0), 0), dst.size().height - h);
 			int drift_x = 3; //int(MAX(3, MIN(0.3*w, 5)));
 			int drift_y = 3;// int(MAX(3, MIN(0.3*h, 5)));
-			//Ìí¼ÓÅÐ¶Ï//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+			////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 			//cout << "x1===" << x << " y1===" << y << endl;
 			//cout << "x2===" << x2 << " y2===" << y2 << endl;
 
@@ -1347,7 +1269,7 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 			}
 		}
 		m_RecInfoCall(60);
-		//×îºóÒ»ÁÐ
+
 		for (int i = 0; i <= src.size().height - block_h; i = i + block_h)
 			//for (int i = 0; i < boundRect_src.size(); i++)
 		{
@@ -1431,7 +1353,7 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 		double y2 = MIN(MAX(point2.at<double>(1, 0), 0), dst.size().height - h);
 		int drift_x = 3; //int(MAX(3, MIN(0.3*w, 5)));
 		int drift_y = 3;// int(MAX(3, MIN(0.3*h, 5)));
-		//Ìí¼ÓÅÐ¶Ï//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		//cout << "x1===" << x << " y1===" << y << endl;
 		//cout << "x2===" << x2 << " y2===" << y2 << endl;
 
@@ -1506,7 +1428,7 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 			double dst_mean = compute_mean(dst_select);
 			cout << "src_mean=" << src_mean << endl;;
 			cout << "dst_mean=" << dst_mean << endl;
-			/////////////////////////////»ñÈ¡¶þÖµ»¯ºóµÄÐ¡¾ØÐÎ///////////////////////////
+			////////////////////////////////////////////////////////
 			vector<KeyPoint>kp1, kp2;
 
 			int maxcorners = 5000;
@@ -1522,8 +1444,8 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 
 			FREAK descriptor_extractor;
 
-			cout << "µÚÒ»·ùÍ¼µãÊý=" << kp1.size() << endl;
-			cout << "µÚ¶þ·ùÍ¼µãÊý=" << kp2.size() << endl;
+			cout << "kp1_size=" << kp1.size() << endl;
+			cout << "kp2_size=" << kp2.size() << endl;
 			//Ptr<DescriptorExtractor> descriptor_extractor = DescriptorExtractor::create("SIFT");//´´½¨ÌØÕ÷ÏòÁ¿Éú³ÉÆ÷   
 			Mat descriptor1, descriptor2;
 			descriptor_extractor.compute(src_select, kp1, descriptor1);
@@ -1533,7 +1455,7 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 			matcher.match(descriptor1, descriptor2, matches);
 
 
-			cout << "×¼È·µÄµãÊý=" << matches.size() << endl;
+			cout << "match_size=" << matches.size() << endl;
 			Mat img_matches;
 			drawMatches(src_select, kp1, dst_select, kp2, matches, img_matches);
 			Mat img_matches_resize;
@@ -1556,7 +1478,7 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 			}
 			progress = 0.3;
 			src_result.setTo(0);
-			//2ÖÐµÄµã=t*1ÖÐµÄµã;Ò²¾ÍÊÇ½«1±ä»¯µ½2ÖÐ
+			
 			//if (point_src.size()>20)
 			//{
 			//Mat T = Homography_Nelder_Mead_with_outliers(point_src, point_dst, 5000);
@@ -1598,7 +1520,7 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 					double y2 = MIN(MAX(point2.at<double>(1, 0), 0), dst.size().height - h);
 					int drift_x = 3; //int(MAX(3, MIN(0.3*w, 5)));
 					int drift_y = 3;// int(MAX(3, MIN(0.3*h, 5)));
-					//Ìí¼ÓÅÐ¶Ï//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+					///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 					//cout << "x1===" << x << " y1===" << y << endl;
 					//cout << "x2===" << x2 << " y2===" << y2 << endl;
 
@@ -1628,7 +1550,7 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 						}
 					}
 				}
-			//×îºóÒ»ÐÐ
+			
 			m_RecInfoCall(30 + 33 / warp_H.size() * warp_i + 33 / warp_H.size() * 5 / 6);
 			for (int j = 0; j <= src.size().width - block_w; j = j + block_w)
 				//for (int i = 0; i < boundRect_src.size(); i++)
@@ -1689,7 +1611,6 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 				}
 			}
 			m_RecInfoCall(30 + 33 / warp_H.size() * warp_i + 33 / warp_H.size() * 6 / 6);
-			//×îºóÒ»ÁÐ
 			for (int i = 0; i <= src.size().height - block_h; i = i + block_h)
 				//for (int i = 0; i < boundRect_src.size(); i++)
 			{
@@ -1718,7 +1639,7 @@ extern "C" __declspec(dllexport) int __stdcall textdetect(const char* srcc, cons
 				double y2 = MIN(MAX(point2.at<double>(1, 0), 0), dst.size().height - h);
 				int drift_x = 3; //int(MAX(3, MIN(0.3*w, 5)));
 				int drift_y = 3;// int(MAX(3, MIN(0.3*h, 5)));
-				//Ìí¼ÓÅÐ¶Ï//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 				//cout << "x1===" << x << " y1===" << y << endl;
 				//cout << "x2===" << x2 << " y2===" << y2 << endl;
 

@@ -1,0 +1,68 @@
+﻿生成启动时间为 2018/1/3 15:22:53。
+     1>项目“C:\Users\zmd\Desktop\DifferentialDetection-1217\huangshanjinggong\color\color\color.vcxproj”在节点 2 上(Rebuild 个目标)。
+     1>ClCompile:
+         C:\software\vs2013\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D COLOR_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt dllmain.cpp text_detection_color.cpp
+         dllmain.cpp
+         text_detection_color.cpp
+     1>text_detection_color.cpp(18): warning C4005: “MIN”: 宏重定义
+                 C:\software\opencv\build\include\opencv2/core/types_c.h(287) : 参见“MIN”的前一个定义
+     1>text_detection_color.cpp(458): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(571): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(983): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1011): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1012): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1016): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1027): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1043): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1071): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1072): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1076): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1087): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1103): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1131): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1132): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1136): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1147): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1158): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1186): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1187): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1193): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1204): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1235): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1269): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1297): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1310): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1338): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1339): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1343): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1354): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1360): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1370): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1398): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1399): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1403): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1414): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1419): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1430): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1458): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1459): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1463): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1474): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1479): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1485): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1513): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1514): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1520): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_color.cpp(1531): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+       Link:
+         C:\software\vs2013\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\zmd\Desktop\DifferentialDetection-1217\huangshanjinggong\color\x64\Release\color.dll" /INCREMENTAL:NO /NOLOGO opencv_ml248.lib opencv_calib3d248.lib opencv_contrib248.lib opencv_core248.lib opencv_features2d248.lib opencv_flann248.lib opencv_gpu248.lib opencv_highgui248.lib opencv_imgproc248.lib opencv_legacy248.lib opencv_objdetect248.lib opencv_ts248.lib opencv_video248.lib opencv_nonfree248.lib opencv_ocl248.lib opencv_photo248.lib opencv_stitching248.lib opencv_superres248.lib opencv_videostab248.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\zmd\Desktop\DifferentialDetection-1217\huangshanjinggong\color\x64\Release\color.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\zmd\Desktop\DifferentialDetection-1217\huangshanjinggong\color\x64\Release\color.lib" /MACHINE:X64 /DLL x64\Release\dllmain.obj
+         x64\Release\text_detection_color.obj
+            正在创建库 C:\Users\zmd\Desktop\DifferentialDetection-1217\huangshanjinggong\color\x64\Release\color.lib 和对象 C:\Users\zmd\Desktop\DifferentialDetection-1217\huangshanjinggong\color\x64\Release\color.exp
+         正在生成代码
+         已完成代码的生成
+         color.vcxproj -> C:\Users\zmd\Desktop\DifferentialDetection-1217\huangshanjinggong\color\x64\Release\color.dll
+     1>已完成生成项目“C:\Users\zmd\Desktop\DifferentialDetection-1217\huangshanjinggong\color\color\color.vcxproj”(Rebuild 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:03.85

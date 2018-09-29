@@ -1,0 +1,124 @@
+﻿生成启动时间为 2018/3/21 10:09:53。
+     1>项目“D:\huangshan\huangshanjinggong\structure\structure\structure.vcxproj”在节点 2 上(Rebuild 个目标)。
+     1>ClCompile:
+         C:\software\vs2013\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D STRUCTURE_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt dllmain.cpp text_detection.cpp
+         dllmain.cpp
+         text_detection.cpp
+     1>text_detection.cpp(21): warning C4005: “MIN”: 宏重定义
+                 C:\software\opencv\build\include\opencv2/core/types_c.h(287) : 参见“MIN”的前一个定义
+     1>text_detection.cpp(478): warning C4566: 由通用字符名称“\u00B5”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(478): warning C4566: 由通用字符名称“\u00B4”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(478): warning C4566: 由通用字符名称“\u00CE”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(478): warning C4566: 由通用字符名称“\u00CA”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(478): warning C4566: 由通用字符名称“\u00FD”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(479): warning C4566: 由通用字符名称“\u00EE”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(479): warning C4566: 由通用字符名称“\u00B4”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(479): warning C4566: 由通用字符名称“\u00D0”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(479): warning C4566: 由通用字符名称“\u00A1”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(479): warning C4566: 由通用字符名称“\u00CF”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(479): warning C4566: 由通用字符名称“\u00B2”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(479): warning C4566: 由通用字符名称“\u00CE”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(479): warning C4566: 由通用字符名称“\u00AA”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00D2”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00D1”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00D5”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00B5”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00BD”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00EE”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00D3”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00C5”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00B9”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00FB”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00A3”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00AC”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00D0”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00A1”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00CF”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00B2”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00CE”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(480): warning C4566: 由通用字符名称“\u00AA”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(606): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection.cpp(719): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1247): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1275): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1276): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1280): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1292): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1307): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1335): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1336): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1340): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1352): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1367): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1395): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1396): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1400): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1412): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1422): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1450): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1451): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1457): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1469): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1504): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1526): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1532): warning C4566: 由通用字符名称“\u00B5”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1532): warning C4566: 由通用字符名称“\u00DA”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1532): warning C4566: 由通用字符名称“\u00D2”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1532): warning C4566: 由通用字符名称“\u00BB”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1532): warning C4566: 由通用字符名称“\u00CD”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1532): warning C4566: 由通用字符名称“\u00BC”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1532): warning C4566: 由通用字符名称“\u00E3”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1532): warning C4566: 由通用字符名称“\u00CA”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1532): warning C4566: 由通用字符名称“\u00FD”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1533): warning C4566: 由通用字符名称“\u00B5”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1533): warning C4566: 由通用字符名称“\u00DA”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1533): warning C4566: 由通用字符名称“\u00B6”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1533): warning C4566: 由通用字符名称“\u00FE”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1533): warning C4566: 由通用字符名称“\u00CD”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1533): warning C4566: 由通用字符名称“\u00BC”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1533): warning C4566: 由通用字符名称“\u00E3”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1533): warning C4566: 由通用字符名称“\u00CA”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1533): warning C4566: 由通用字符名称“\u00FD”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1543): warning C4566: 由通用字符名称“\u00BC”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1543): warning C4566: 由通用字符名称“\u00C8”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1543): warning C4566: 由通用字符名称“\u00B5”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1543): warning C4566: 由通用字符名称“\u00C4”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1543): warning C4566: 由通用字符名称“\u00E3”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1543): warning C4566: 由通用字符名称“\u00CA”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1543): warning C4566: 由通用字符名称“\u00FD”表示的字符不能在当前代码页(936)中表示出来
+     1>text_detection.cpp(1552): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1576): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1589): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1617): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1618): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1622): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1634): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1639): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1649): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1677): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1678): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1682): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1694): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1698): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1709): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1737): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1738): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1742): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1754): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1764): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1792): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1793): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1799): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection.cpp(1811): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+       Link:
+         C:\software\vs2013\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"D:\huangshan\huangshanjinggong\structure\x64\Release\structure.dll" /INCREMENTAL:NO /NOLOGO opencv_ml248.lib opencv_calib3d248.lib opencv_contrib248.lib opencv_core248.lib opencv_features2d248.lib opencv_flann248.lib opencv_gpu248.lib opencv_highgui248.lib opencv_imgproc248.lib opencv_legacy248.lib opencv_objdetect248.lib opencv_ts248.lib opencv_video248.lib opencv_nonfree248.lib opencv_ocl248.lib opencv_photo248.lib opencv_stitching248.lib opencv_superres248.lib opencv_videostab248.lib ViKey.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:\huangshan\huangshanjinggong\structure\x64\Release\structure.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:\huangshan\huangshanjinggong\structure\x64\Release\structure.lib" /MACHINE:X64 /DLL x64\Release\dllmain.obj
+         x64\Release\text_detection.obj
+            正在创建库 D:\huangshan\huangshanjinggong\structure\x64\Release\structure.lib 和对象 D:\huangshan\huangshanjinggong\structure\x64\Release\structure.exp
+         正在生成代码
+         已完成代码的生成
+         structure.vcxproj -> D:\huangshan\huangshanjinggong\structure\x64\Release\structure.dll
+     1>已完成生成项目“D:\huangshan\huangshanjinggong\structure\structure\structure.vcxproj”(Rebuild 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:04.84

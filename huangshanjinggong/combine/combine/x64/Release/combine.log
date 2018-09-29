@@ -1,0 +1,32 @@
+﻿生成启动时间为 2017/12/16 21:04:01。
+     1>项目“C:\Users\zmd\Desktop\huangshanjinggong-12.15\huangshanjinggong\combine\combine\combine.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         C:\software\vs2013\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /O2 /Oi /GL /D WIN32 /D NDEBUG /D _WINDOWS /D _USRDLL /D COMBINE_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt dllmain.cpp text_detection_combine.cpp
+         dllmain.cpp
+         text_detection_combine.cpp
+     1>text_detection_combine.cpp(17): warning C4005: “MIN”: 宏重定义
+                 C:\software\opencv\build\include\opencv2/core/types_c.h(287) : 参见“MIN”的前一个定义
+     1>text_detection_combine.cpp(95): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_combine.cpp(96): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+     1>text_detection_combine.cpp(149): warning C4258: “i”: 忽略 For 循环中的定义；使用封闭范围中的定义
+                 text_detection_combine.cpp(137) : 忽略“i”的定义
+                 text_detection_combine.cpp(123) : 使用“i”的定义
+     1>text_detection_combine.cpp(158): warning C4258: “i”: 忽略 For 循环中的定义；使用封闭范围中的定义
+                 text_detection_combine.cpp(137) : 忽略“i”的定义
+                 text_detection_combine.cpp(123) : 使用“i”的定义
+     1>text_detection_combine.cpp(244): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection_combine.cpp(268): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection_combine.cpp(304): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+     1>text_detection_combine.cpp(334): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+       Link:
+         C:\software\vs2013\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\zmd\Desktop\huangshanjinggong-12.15\huangshanjinggong\combine\x64\Release\combine.dll" /INCREMENTAL:NO /NOLOGO opencv_ml248.lib opencv_calib3d248.lib opencv_contrib248.lib opencv_core248.lib opencv_features2d248.lib opencv_flann248.lib opencv_gpu248.lib opencv_highgui248.lib opencv_imgproc248.lib opencv_legacy248.lib opencv_objdetect248.lib opencv_ts248.lib opencv_video248.lib opencv_nonfree248.lib opencv_ocl248.lib opencv_photo248.lib opencv_stitching248.lib opencv_superres248.lib opencv_videostab248.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\zmd\Desktop\huangshanjinggong-12.15\huangshanjinggong\combine\x64\Release\combine.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\zmd\Desktop\huangshanjinggong-12.15\huangshanjinggong\combine\x64\Release\combine.lib" /MACHINE:X64 /DLL x64\Release\dllmain.obj
+         x64\Release\text_detection_combine.obj
+            正在创建库 C:\Users\zmd\Desktop\huangshanjinggong-12.15\huangshanjinggong\combine\x64\Release\combine.lib 和对象 C:\Users\zmd\Desktop\huangshanjinggong-12.15\huangshanjinggong\combine\x64\Release\combine.exp
+         正在生成代码
+         已完成代码的生成
+         combine.vcxproj -> C:\Users\zmd\Desktop\huangshanjinggong-12.15\huangshanjinggong\combine\x64\Release\combine.dll
+     1>已完成生成项目“C:\Users\zmd\Desktop\huangshanjinggong-12.15\huangshanjinggong\combine\combine\combine.vcxproj”(Build 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:03.85
